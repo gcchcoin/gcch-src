@@ -1,0 +1,11 @@
+[Unit]
+Description=GCCHCoin daemon serivce
+After=network.target
+
+[Service]
+Type=simple
+User=GCCHCoin
+ExecStart=/opt/GCCHCoin/GCCHCoind
+
+[Install]
+WantedBy=multi-user.target

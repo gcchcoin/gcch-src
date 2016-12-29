@@ -1,0 +1,5 @@
+GCCHCoin-qt usr/bin
+share/pixmaps/GCCHCoin32.xpm usr/share/pixmaps
+share/pixmaps/GCCHCoin80.xpm usr/share/pixmaps
+debian/GCCHCoin-qt.desktop usr/share/applications
+debian/GCCHCoin-qt.protocol usr/share/kde4/services/

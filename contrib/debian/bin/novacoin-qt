@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e
+
+umask 077
+
+basedir=~/.GCCHCoin
+dbfile="$basedir/DB_CONFIG"
+cfgfile="$basedir/GCCHCoin.conf"
+
+[ -e "$basedir" ] || mkdir "$basedir"
+
+# GCCHCoin does not clean up DB log files by default
+[ -e "$dbfile" ] || echo 'set_flags DB_LOG_AUTOREMOVE' > "$dbfile"
+
+exec /usr/lib/GCCHCoin/GCCHCoin-qt "$@"

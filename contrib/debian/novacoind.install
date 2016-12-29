@@ -1,0 +1,2 @@
+debian/bin/GCCHCoind usr/bin
+src/GCCHCoind usr/lib/GCCHCoin

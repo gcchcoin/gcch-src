@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=GCCHCoin
+Comment=GCCHCoin P2P Cryptocurrency
+Comment[ru]=GCCHCoin, P2P криптовалюта
+Comment[fr]=GCCHCoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=GCCHCoin, eşten eşe kriptografik sanal para birimi
+Exec=/usr/bin/GCCHCoin-qt
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/GCCHCoin80.xpm
+MimeType=x-scheme-handler/GCCHCoin;
+Categories=Office;

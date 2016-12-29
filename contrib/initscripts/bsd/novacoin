@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# PROVIDE: GCCHCoin
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+#
+# Add the following lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable this service:
+#
+# GCCHCoin_enable (bool): Set to NO by default. Set this variable to YES if you want to enable GCCHCoin service.
+# GCCHCoin_config (path): Set to /usr/local/etc/GCCHCoin.conf by default.
+# GCCHCoin_user:  The user account GCCHCoin daemon runs as. It uses 'root' user by default.
+# GCCHCoin_group: The group account GCCHCoin daemon runs as. It uses 'wheel' group by default.
+# GCCHCoin_datadir (str): Default to "/var/db/GCCHCoin". Base data directory.
+
+. /etc/rc.subr
+
+name=GCCHCoin
+rcvar=GCCHCoin_enable
+
+: ${GCCHCoin_enable:=NO}
+: ${GCCHCoin_config=/usr/local/etc/GCCHCoin.conf}
+: ${GCCHCoin_datadir=/var/db/GCCHCoin}
+: ${GCCHCoin_user="root"}
+: ${GCCHCoin_group="wheel"}
+
+required_files=${GCCHCoin_config}
+command=/usr/local/bin/GCCHCoind
+GCCHCoin_chdir=${GCCHCoin_datadir}
+pidfile="${GCCHCoin_datadir}/GCCHCoind.pid"
+stop_cmd=GCCHCoin_stop
+command_args="-conf=${GCCHCoin_config} -datadir=${GCCHCoin_datadir} -daemon -pid=${pidfile}"
+start_precmd="${name}_prestart"
+
+GCCHCoin_create_datadir()
+{
+	echo "Creating data directory"
+	eval mkdir -p ${GCCHCoin_datadir}
+	[ $? -eq 0 ] && chown -R ${GCCHCoin_user}:${GCCHCoin_group} ${GCCHCoin_datadir}
+}
+
+GCCHCoin_prestart()
+{
+	if [ ! -d "${GCCHCoin_datadir}/." ]; then
+		GCCHCoin_create_datadir || return 1
+	fi
+}
+
+GCCHCoin_requirepidfile()
+{
+	if [ ! "0`check_pidfile ${pidfile} ${command}`" -gt 1 ]; then
+		echo "${name} not running? (check $pidfile)."
+		exit 1
+	fi
+}
+
+GCCHCoin_stop()
+{
+    GCCHCoin_requirepidfile
+
+	echo "Stopping ${name}."
+	eval ${command} -conf=${GCCHCoin_config} -datadir=${GCCHCoin_datadir} stop
+	wait_for_pids ${rc_pid}
+}
+
+load_rc_config $name
+run_rc_command "$1"
